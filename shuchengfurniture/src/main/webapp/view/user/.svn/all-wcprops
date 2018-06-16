@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/user
+END
+userlist.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/user/userlist.jsp
+END
+addUser.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/user/addUser.jsp
+END
+changePass.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/user/changePass.jsp
+END
+editUser.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/user/editUser.jsp
+END

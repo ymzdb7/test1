@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/ncjc/push/repository
+END
+PushMsgDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/ncjc/push/repository/PushMsgDao.java
+END
+PushDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/ncjc/push/repository/PushDao.java
+END
+MBPushDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/ncjc/push/repository/MBPushDao.java
+END

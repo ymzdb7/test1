@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winhands.cshj.article.repository.MBFileReadLogDao">
+  <select id="queryFileReadLogLimit" parameterType="Map" resultType="FileReadLog">
+  	select t1.id,t1.file_id,t1.read_user_id,t1.read_user_name,t1.read_date,t1.type,
+  			t1.spare_1,t1.spare_2,t1.spare_3 
+  	from t_file_read_log t1,t_article t2,t_member t3
+  	where t1.file_id=t2.id and t1.read_user_id=t3.id
+  	and t1.read_user_id=#read_user_id# and t1.id=#id# 
+  	order by t1.read_date desc limit 1 
+ </select>
+ <select id="queryLogList" parameterType="Map" resultType="FileReadLog">
+  	select t2.id,t1.title file_id,t2.read_user_id,t3.user_name read_user_name,t2.read_date,t2.type,t2.spare_1,
+	t2.spare_2,to_char(t2.read_date,'yyyy-MM-dd HH:mm:ss')spare_3
+	from t_article t1,t_file_read_log t2,t_member t3
+	where t1.id=t2.file_id and t2.read_user_id=t3.id
+	<if test="id != null and id != ''">  
+	         and t1.id =#{id}  
+	</if>
+	<if test="type != null and type != ''">  
+	          and t2.type =#{type}   
+	 </if>
+	 <if test="user_name != null and user_name != ''">  
+	          and t3.user_name like '%'||#{user_name}||'%'     
+	 </if>
+	order by t2.read_date desc
+ </select>
+</mapper> 

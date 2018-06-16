@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/cshj/article/repository
+END
+FileReadLogDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/cshj/article/repository/FileReadLogDao.java
+END
+MBArticleReadCollectDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/cshj/article/repository/MBArticleReadCollectDao.java
+END
+ArticleDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/cshj/article/repository/ArticleDao.java
+END
+MBDirectoryDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/cshj/article/repository/MBDirectoryDao.java
+END
+MBFileReadLogDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/cshj/article/repository/MBFileReadLogDao.java
+END
+DirectoryDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/cshj/article/repository/DirectoryDao.java
+END
+ArticleReadCollectDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/cshj/article/repository/ArticleReadCollectDao.java
+END
+MBArticleDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/cshj/article/repository/MBArticleDao.java
+END

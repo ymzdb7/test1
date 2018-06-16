@@ -1,0 +1,25 @@
+1.t_article
+	新增  is_jx   是否为精选文章    0 ：否   1：是
+		is_answer  是否已答题   0 ：否   1：是
+		order_read   阅读序号
+		 jx_type character varying(10), -- 精选类型   0：小学版     1：  大学版
+2.t_directory
+  新增   summary    简介
+  
+ 3,新增表    t_integration   t_news  t_member_integration
+   t_subject_mag  t_subject_result
+   
+ 4.t_member  表
+ 新增字段
+ org_id1 character varying(32), -- 省
+  org_id2 character varying(32), -- 市
+  org_id3 character varying(32), -- 区/县id
+  school_id character varying(32), -- 学校id
+  class_id character varying(32), -- 班级id
+  integration character varying(20), -- 积分
+  spare_1 character varying(500),
+  spare_2 character varying(500),
+  spare_3 character varying(500),
+  is_student character varying(10), -- 是否为在校生
+  is_complete_student character varying(10), -- 学生信息是否完善
+  user_name_cn character varying(50), -- 学生姓名

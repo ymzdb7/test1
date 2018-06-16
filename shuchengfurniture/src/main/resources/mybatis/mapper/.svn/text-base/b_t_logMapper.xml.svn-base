@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winhands.cshj.log.repository.LogDao">
+	<!--查询日志列表-->
+	<select id="queryLogList" parameterType="Map" resultType="log">
+	      SELECT id,content,create_time createTime,create_user_id createUserId,create_user_name createUserName,"module"
+		  FROM t_log
+		  where 1=1
+		  <if test="userName != null and userName != ''">
+			  and create_user_name like '%'||#{userName}||'%'
+		  </if>
+	       <if test="startTime != null and startTime != ''">
+	            and create_time <![CDATA[ >=]]>     #{startTime}
+	   	   </if>  
+	   	   <if test="endTime != null and endTime != ''">
+	            and create_time  <![CDATA[ <=]]>    #{endTime}
+	   	   </if>
+		order BY createTime DESC
+	</select>
+
+	<!--新增日志-->
+	<insert id="saveLog" parameterType="log">
+		INSERT INTO t_log (id,content,create_time,create_user_id,create_user_name,"module") VALUES (#{id},#{content},now(),#{createUserId},#{createUserName},#{module})
+	</insert>
+</mapper> 

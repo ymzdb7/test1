@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winhands.cshj.fee.repository.FeeDao">
+
+	<!--查询会员年费半年费列表-->
+	<select id="queryFeeList" resultType="fee" parameterType="fee">
+		SELECT id,type,fee,effective_time effectiveTime,create_user_id createUserId,create_time createTime
+		FROM t_membership_fee WHERE 1 = 1
+			<if test="type != null and type != '' and type != '0'">
+				and type = #{type}
+			</if>
+		ORDER BY effective_time DESC
+	</select>
+
+	<!--查询使用中的会费标准-->
+	<select id="queryInUseFeeList" resultType="fee" parameterType="fee">
+		SELECT id,type,fee,effective_time effectiveTime,create_user_id createUserId,create_time createTime
+		FROM t_membership_fee WHERE 1 = 1 AND effective_time in (SELECT max(effective_time) FROM t_membership_fee where effective_time <![CDATA[ <=  ]]> now() GROUP BY type)
+		<if test="type != null and type != '' and type != '0'">
+			and type = #{type}
+		</if>
+		ORDER BY effective_time DESC
+	</select>
+	<!--根据id获取会费信息-->
+	<select id="queryFeeById" resultType="fee" parameterType="fee">
+		SELECT id,type,fee,effective_time effectiveTime,create_user_id createUserId,create_time createTime
+		FROM t_membership_fee WHERE 1 = 1 AND effective_time in (SELECT max(effective_time) FROM t_membership_fee where effective_time <![CDATA[ <=  ]]> now() GROUP BY type)
+		<if test="id != null and id != ''">
+			and id = #{id}
+		</if>
+		ORDER BY effective_time DESC
+	</select>
+	<!--保存会费信息-->
+	<insert id="saveFee" parameterType="fee">
+		INSERT  INTO t_membership_fee (id,type,fee,effective_time,create_user_id,create_time)
+		VALUES (#{id},#{type},#{fee},#{effectiveTime},#{createUserId},now())
+	</insert>
+
+	<!--删除会费信息-->
+	<delete id="deleteFeeById" parameterType="string">
+		DELETE FROM t_membership_fee WHERE id = #{$}
+	</delete>
+
+    <select id="queryOrderNum" resultType="java.lang.String">
+       select cast(nextval('sq_ordernumber') as varchar) ordernum  
+    </select>
+</mapper> 

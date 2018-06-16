@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/articleFile
+END
+collectList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/articleFile/collectList.jsp
+END
+contentIndex.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/articleFile/contentIndex.jsp
+END
+subjectList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/articleFile/subjectList.jsp
+END
+contentMag.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/shucheng/!svn/ver/215/branches/shuchenggy/src/main/webapp/view/articleFile/contentMag.jsp
+END
+editContent.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/shucheng/!svn/ver/215/branches/shuchenggy/src/main/webapp/view/articleFile/editContent.jsp
+END
+comment.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/articleFile/comment.jsp
+END
+loveLogList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/articleFile/loveLogList.jsp
+END
+readList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/articleFile/readList.jsp
+END
+subjectAdd.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/articleFile/subjectAdd.jsp
+END
+subjectEdit.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/articleFile/subjectEdit.jsp
+END

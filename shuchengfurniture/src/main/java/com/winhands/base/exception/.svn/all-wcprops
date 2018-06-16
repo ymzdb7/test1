@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/shucheng/!svn/ver/199/branches/shuchenggy/src/main/java/com/winhands/base/exception
+END
+SessionTimeoutClientException.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/shucheng/!svn/ver/199/branches/shuchenggy/src/main/java/com/winhands/base/exception/SessionTimeoutClientException.java
+END
+AuthenticationUtilException.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/shucheng/!svn/ver/199/branches/shuchenggy/src/main/java/com/winhands/base/exception/AuthenticationUtilException.java
+END
+SessionTimeoutException.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/shucheng/!svn/ver/199/branches/shuchenggy/src/main/java/com/winhands/base/exception/SessionTimeoutException.java
+END

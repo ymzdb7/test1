@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winhands.base.auth.repository.MenuDao">
+
+	<!-- 根据用户id查询对应菜单 -->
+	<select id="queryMenuByUserId" parameterType="String"
+		resultType="Menu">
+		select menu_id id,menu_name as name,menu_url url,menu_type
+		as type,is_parent isParent,
+		parent_menu_id parentId,order_id orderId,is_vaild isVaild,js_text jsText,createuser
+		createUser,createdate createDate
+		from t_menu_conf where menu_id in
+		(select t1.menu_id from t_role_menu t1
+		where t1.role_id in (select role_id from t_user_role where user_id=#{id}))
+	</select>
+
+	<!-- 查询所有菜单 -->
+	<select id="queryMenuList" resultType="Menu">
+		select menu_id
+		id,menu_name as name,menu_url url,menu_type as type,is_parent
+		isParent,
+		parent_menu_id parentId,order_id orderId,is_vaild isVaild,js_text jsText,createuser
+		createUser,createdate createDate
+		from t_menu_conf order by order_id
+	</select>
+
+	<!-- 查询子菜单 -->
+	<select id="querySonMenu" resultType="Menu" parameterType="Menu">
+		select menu_id id,menu_name as name,menu_url url,menu_type as
+		type,is_parent isParent,
+		parent_menu_id parentId,order_id orderId,is_vaild isVaild,js_text jsText,createuser
+		createUser,createdate createDate
+		from t_menu_conf where parent_menu_id = #{id} order by order_id
+	</select>
+
+	<!-- 根据条件查询菜单 -->
+	<select id="queryMenu" resultType="Menu" parameterType="Menu">
+		select menu_id id,menu_name as name,menu_url url,menu_type as
+		type,is_parent isParent,
+		parent_menu_id parentId,order_id orderId,is_vaild isVaild,js_text jsText,createuser
+		createUser,createdate createDate
+		from t_menu_conf where 1=1
+		<if test="id !='' and id != null">
+			and menu_id = #{id}
+		</if>
+		<if test="isParent != '' and isParent != null">
+			and is_parent = #{isParent}
+		</if>
+	</select>
+
+	<!-- 根据id删除菜单（包括子菜单） -->
+	<delete id="deleteById" parameterType="string">
+		delete from t_menu_conf
+		where menu_id = #{id} or parent_menu_id = #{id}
+	</delete>
+
+	<!-- 删除菜单对应角色 -->
+	<delete id="deleteRoleMenu" parameterType="string">
+		delete from t_role_menu where menu_id = #{id} or
+		menu_id in (select menu_id from t_menu_conf where parent_menu_id =
+		#{id})
+	</delete>
+
+	<!-- 添加菜单 -->
+	<insert id="save" parameterType="Menu">
+		insert into t_menu_conf
+		values(#{id},#{name},#{url},#{type},#{isParent},#{parentId},#{orderId},#{isVaild},#{jsText},#{createUser},now())
+	</insert>
+
+	<!-- 修改菜单 -->
+	<update id="update" parameterType="Menu">
+		update t_menu_conf set
+		menu_name=#{name},menu_url =
+		#{url},menu_type=#{type},is_parent=#{isParent},parent_menu_id=#{parentId},
+		order_id=#{orderId},is_vaild=#{isVaild},js_text=#{jsText},createuser=#{createUser},createdate=now()
+		where menu_id = #{id}
+	</update>
+</mapper> 

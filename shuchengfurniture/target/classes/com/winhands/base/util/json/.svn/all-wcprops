@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/base/util/json
+END
+ObjectMapperCustomer.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/base/util/json/ObjectMapperCustomer.java
+END
+JsonUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/base/util/json/JsonUtil.java
+END
+MyNullSerializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/base/util/json/MyNullSerializer.java
+END

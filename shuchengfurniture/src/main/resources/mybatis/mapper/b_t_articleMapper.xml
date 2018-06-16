@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winhands.cshj.article.repository.MBArticleDao">
+	<select id="queryArticleListByMemId" parameterType="Map" resultType="Article">
+		select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1, to_char(t1.create_date,'yyyy-MM-dd ') spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t2.state_value is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words
+		from t_article t1,t_article_read_collect t2,t_member t3
+		where t1.id=t2.file_id and t2.read_user_id=t3.id and t2.state_value='1'
+		 	<if test="read_user_id != null and read_user_id != ''">  
+	            and t2.read_user_id =#{read_user_id} 
+	   	   </if>
+	   	   <if test="type != null and type != ''">  
+	            and t2.type=#{type} 
+	   	   </if>
+	</select>
+	<select id="queryArticleListWeb" parameterType="Map" resultType="Article">
+  	select  ttt1.id,ttt1.author_id,ttt1.author_name,ttt1.file_type_id,ttt1.file_type,ttt1.small_pic_path,ttt1.small_pic_save_name,
+	ttt1.small_pic_prior_name,ttt1.create_user_id,ttt1.create_date,ttt1.is_online,ttt1.read_limit,ttt1.is_promotion,
+	ttt1.spare_1,to_char(ttt1.create_date,'yyyy-MM-dd ') spare_2,ttt1.spare_3,ttt1.title,ttt1.summary,to_char(sum(ttt1.comment_num), '999') comment_num,to_char(sum(ttt1.collect_num), '999')collect_num,
+	ttt1.is_collect,to_char(sum(ttt1.love_num), '999') love_num,to_char(sum(ttt1.read_num), '999') read_num,ttt1.key_words
+	,ttt1.order_sc,ttt1.order_new,ttt1.order_col,ttt1.order_hot,ttt1.online_date,ttt1.is_jx
+	from(
+			(select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,0 comment_num,count(1) collect_num,
+			tt1.is_collect,tt1.is_love,0 love_num,0 read_num,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.is_jx
+			
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.order_new,t1.order_col,t1.order_hot,t1.online_date,t1.is_jx
+			from t_article t1,t_article_read_collect t2,t_member t3
+			where t1.id=t2.file_id  and t2.read_user_id=t3.id and t2.type='2' and t2.state_value='1'
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.is_love,
+			tt1.is_collect,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.is_jx)
+		union
+			(select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,0 comment_num,0 collect_num,
+			tt1.is_collect, tt1.is_love,0 love_num,count(1) read_num,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.is_jx
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.order_new,t1.order_col,t1.order_hot,t1.online_date,t1.is_jx
+			from t_article t1,t_article_read_collect t2,t_member t3
+			where t1.id=t2.file_id  and t2.read_user_id=t3.id and t2.type='0'
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.collect_num,
+			tt1.is_collect,tt1.is_love,tt1.love_num,tt1.read_num,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.is_jx)
+		union(
+			select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,0 comment_num,0 collect_num,
+			tt1.is_collect,tt1.is_love,count(1) love_num,0 read_num,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.is_jx
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.order_new,t1.order_col,t1.order_hot,t1.online_date,t1.is_jx
+			from t_article t1,t_article_read_collect t2,t_member t3
+			where t1.id=t2.file_id  and t2.read_user_id=t3.id and t2.type='1' and t2.state_value='1'
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.collect_num,
+			tt1.is_collect,tt1.is_love,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.is_jx
+			)
+		union(
+			select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,count(1) comment_num,0 collect_num,
+			tt1.is_collect,tt1.is_love,0 love_num,0 read_num,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.is_jx
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.order_new,t1.order_col,t1.order_hot,t1.online_date,t1.is_jx
+			from t_article t1,t_comment t2
+			where t1.id=t2.article_id  and (t2.parent_id = ''  or t2.parent_id is null)
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.collect_num,
+			tt1.is_collect,tt1.is_love,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.is_jx
+			)
+		union(
+		select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+		t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+		t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,0 comment_num,0 collect_num,t1.is_collect,t1.is_love,
+		0 love_num,0 read_num,t1.key_words,t1.order_sc,t1.order_new,t1.order_col,t1.order_hot,t1.online_date,t1.is_jx
+		from t_article t1
+		)
+	)ttt1
+	<where>
+			<if test="online_date != null and online_date != ''">  
+	           and ttt1.online_date <![CDATA[ <= ]]> #{online_date}
+	            
+	   	   </if>
+	   	   <if test="is_jx != null and is_jx != ''">  
+	           and ttt1.is_jx =#{type} 
+	            
+	   	   </if>
+	       <if test="author_name != null and author_name != ''">  
+	            and ttt1.author_name like '%'||#{author_name}||'%'  
+	            
+	   	   </if>
+	   	   <if test="key_words != null and key_words != ''">  
+	            and ttt1.key_words like '%'||#{key_words}||'%'  
+	   	   </if>
+	   	   <if test="title != null and title != ''">  
+	            and ttt1.title like '%'||#{title}||'%'  
+	   	   </if>
+	   	   <if test="create_time2 != null and create_time2 != ''">  
+	         and  to_char(ttt1.create_date,'yyyy-MM-dd') =#{create_time2} 
+	   	   </if>
+	 </where>
+	group by 
+	ttt1.id,ttt1.author_id,ttt1.author_name,ttt1.file_type_id,ttt1.file_type,ttt1.small_pic_path,ttt1.small_pic_save_name,
+	ttt1.small_pic_prior_name,ttt1.create_user_id,ttt1.create_date,ttt1.is_online,ttt1.read_limit,ttt1.is_promotion,
+	ttt1.spare_1,ttt1.spare_2,ttt1.spare_3,ttt1.title,ttt1.summary,ttt1.is_collect,ttt1.is_love,ttt1.key_words
+	,ttt1.order_sc,ttt1.order_new,ttt1.order_col,ttt1.order_hot,ttt1.online_date,ttt1.is_jx
+	order by 
+	 		<if test="order_new != null and order_new != ''">  
+	             ttt1.order_new desc,  
+	   	   </if>
+	   	   <if test="order_col != null and order_col != ''">  
+	             ttt1.order_col desc,  
+	   	   </if>
+	   	   <if test="order_hot != null and order_hot != ''">  
+	             ttt1.order_hot desc,  
+	   	   </if>
+	ttt1.online_date desc
+ </select>
+<select id="queryArticleList" parameterType="Map" resultType="Article">
+  	select  ttt1.id,ttt1.author_id,ttt1.author_name,ttt1.file_type_id,ttt1.file_type,ttt1.small_pic_path,ttt1.small_pic_save_name,
+	ttt1.small_pic_prior_name,ttt1.create_user_id,ttt1.create_date,ttt1.is_online,ttt1.read_limit,ttt1.is_promotion,
+	ttt1.spare_1,substr(ttt1.online_date,0,11)  spare_2,ttt1.spare_3,ttt1.title,ttt1.summary,to_char(sum(ttt1.comment_num), '999') comment_num,to_char(sum(ttt1.collect_num), '999')collect_num,
+	ttt1.is_collect,to_char(sum(ttt1.love_num), '999') love_num,to_char(sum(ttt1.read_num), '999') read_num,ttt1.key_words
+	,ttt1.order_sc,ttt1.order_new,ttt1.order_col,ttt1.order_hot,ttt1.online_date,ttt1.industry_name
+	from(
+			(select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,0 comment_num,count(1) collect_num,
+			tt1.is_collect,tt1.is_love,0 love_num,0 read_num,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.industry_name
+			
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.order_new,t1.order_col,t1.order_hot,t1.online_date,t1.industry_name
+			
+			from t_article t1,t_article_read_collect t2,t_member t3
+			where t1.id=t2.file_id  and t2.read_user_id=t3.id and t2.type='2' and t2.state_value='1'
+			<if test="is_jx != null and is_jx != ''">  
+	           and t1.is_jx = #{is_jx}
+	   	   </if>
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.is_love,
+			tt1.is_collect,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.industry_name)
+		union
+			(select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,0 comment_num,0 collect_num,
+			tt1.is_collect, tt1.is_love,0 love_num,count(1) read_num,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.industry_name
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.order_new,t1.order_col,t1.order_hot,t1.online_date,t1.industry_name
+			from t_article t1,t_article_read_collect t2,t_member t3
+			where t1.id=t2.file_id  and t2.read_user_id=t3.id and t2.type='0'
+			<if test="is_jx != null and is_jx != ''">  
+	           and t1.is_jx = #{is_jx}
+	   	   </if>
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.collect_num,
+			tt1.is_collect,tt1.is_love,tt1.love_num,tt1.read_num,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.industry_name)
+		union(
+			select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,0 comment_num,0 collect_num,
+			tt1.is_collect,tt1.is_love,count(1) love_num,0 read_num,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.industry_name
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.order_new,t1.order_col,t1.order_hot,t1.online_date,t1.industry_name
+			from t_article t1,t_article_read_collect t2,t_member t3
+			where t1.id=t2.file_id  and t2.read_user_id=t3.id and t2.type='1' and t2.state_value='1'
+			<if test="is_jx != null and is_jx != ''">  
+	           and t1.is_jx = #{is_jx}
+	   	   </if>
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.collect_num,
+			tt1.is_collect,tt1.is_love,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.industry_name
+			)
+		union(
+			select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,count(1) comment_num,0 collect_num,
+			tt1.is_collect,tt1.is_love,0 love_num,0 read_num,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.industry_name
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.order_new,t1.order_col,t1.order_hot,t1.online_date,t1.industry_name
+			from t_article t1,t_comment t2
+			where t1.id=t2.article_id  and (t2.parent_id = ''  or t2.parent_id is null)
+			<if test="is_jx != null and is_jx != ''">  
+	           and t1.is_jx = #{is_jx}
+	   	   </if>
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.collect_num,
+			tt1.is_collect,tt1.is_love,tt1.key_words,tt1.order_sc,tt1.order_new,tt1.order_col,tt1.order_hot,tt1.online_date,tt1.industry_name
+			)
+		union(
+		select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+		t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+		t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,0 comment_num,0 collect_num,t1.is_collect,t1.is_love,
+		0 love_num,0 read_num,t1.key_words,t1.order_sc,t1.order_new,t1.order_col,t1.order_hot,t1.online_date,t1.industry_name
+		from t_article t1
+		<where>
+			<if test="is_jx != null and is_jx != ''">  
+	           and t1.is_jx = #{is_jx}
+	   	   </if>
+		</where>
+		)
+	)ttt1
+	where ttt1.is_online='1'
+			
+			<if test="online_date != null and online_date != ''">  
+	           and ttt1.online_date <![CDATA[ <= ]]> #{online_date}
+	            
+	   	   </if>
+	    	<if test="author_name != null and author_name != ''">  
+	            and ttt1.author_name like '%'||#{author_name}||'%'  
+	            
+	   	   </if>
+	   	   <if test="industry_name != null and industry_name != ''">  
+	            and ttt1.industry_name like '%'||#{industry_name}||'%'  
+	            
+	   	   </if>
+	   	   <if test="key_words != null and key_words != ''">  
+	            and ttt1.key_words like '%'||#{key_words}||'%'  
+	   	   </if>
+	   	   <if test="title != null and title != ''">  
+	            and ttt1.title like '%'||#{title}||'%'  
+	   	   </if>
+	   	   <if test="create_time2 != null and create_time2 != ''">  
+	         and  to_char(ttt1.create_date,'yyyy-MM-dd') =#{create_time2} 
+	   	   </if>
+	group by 
+	ttt1.id,ttt1.author_id,ttt1.author_name,ttt1.file_type_id,ttt1.file_type,ttt1.small_pic_path,ttt1.small_pic_save_name,
+	ttt1.small_pic_prior_name,ttt1.create_user_id,ttt1.create_date,ttt1.is_online,ttt1.read_limit,ttt1.is_promotion,
+	ttt1.spare_1,ttt1.spare_2,ttt1.spare_3,ttt1.title,ttt1.summary,ttt1.is_collect,ttt1.is_love,ttt1.key_words
+	,ttt1.order_sc,ttt1.order_new,ttt1.order_col,ttt1.order_hot,ttt1.online_date,ttt1.industry_name
+	order by 
+	 		<if test="order_new != null and order_new != ''">  
+	             ttt1.order_new desc,  
+	   	   </if>
+	   	   <if test="order_col != null and order_col != ''">  
+	             ttt1.order_col desc,  
+	   	   </if>
+	   	   <if test="order_hot != null and order_hot != ''">  
+	             ttt1.order_hot desc,  
+	   	   </if>
+	ttt1.online_date desc
+ </select>
+ <!-- 收藏榜list -->
+ <select id="queryCollectList" parameterType="Map" resultType="Article">
+  		select  ttt1.id,ttt1.author_id,ttt1.author_name,ttt1.file_type_id,ttt1.file_type,ttt1.small_pic_path,ttt1.small_pic_save_name,
+	ttt1.small_pic_prior_name,ttt1.create_user_id,ttt1.create_date,ttt1.is_online,ttt1.read_limit,ttt1.is_promotion,
+	ttt1.spare_1,substr(ttt1.online_date,0,11)  spare_2,ttt1.spare_3,ttt1.title,ttt1.summary,to_char(sum(ttt1.comment_num), '999') comment_num,to_char(sum(ttt1.collect_num), '999')collect_num,
+	ttt1.is_collect,to_char(sum(ttt1.love_num), '999') love_num,to_char(sum(ttt1.read_num), '999') read_num,ttt1.key_words,ttt1.order_sc,ttt1.online_date
+	from(
+			(select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,0 comment_num,count(1) collect_num,
+			tt1.is_collect,tt1.is_love,0 love_num,0 read_num,tt1.key_words,tt1.order_sc,tt1.online_date
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.online_date
+			from t_article t1,t_article_read_collect t2,t_member t3
+			where t1.id=t2.file_id  and t2.read_user_id=t3.id and t2.type='2' and t2.state_value='1'
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.is_love,
+			tt1.is_collect,tt1.key_words,tt1.order_sc,tt1.online_date)
+		union
+			(select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,0 comment_num,0 collect_num,
+			tt1.is_collect, tt1.is_love,0 love_num,count(1)read_num,tt1.key_words,tt1.order_sc,tt1.online_date
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.online_date
+			from t_article t1,t_article_read_collect t2,t_member t3
+			where t1.id=t2.file_id  and t2.read_user_id=t3.id and t2.type='0'
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.collect_num,
+			tt1.is_collect,tt1.is_love,tt1.love_num,tt1.read_num,tt1.key_words,tt1.order_sc,tt1.online_date)
+		union(
+			select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,0 comment_num,0 collect_num,
+			tt1.is_collect,tt1.is_love,count(1) love_num,0 read_num,tt1.key_words,tt1.order_sc,tt1.online_date
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.online_date
+			from t_article t1,t_article_read_collect t2,t_member t3
+			where t1.id=t2.file_id  and t2.read_user_id=t3.id and t2.type='1' and t2.state_value='1'
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.collect_num,
+			tt1.is_collect,tt1.is_love,tt1.key_words,tt1.order_sc,tt1.online_date
+			)
+		union(
+			select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,count(1) comment_num,0 collect_num,
+			tt1.is_collect,tt1.is_love,0 love_num,0 read_num,tt1.key_words,tt1.order_sc,tt1.online_date
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.online_date
+			from t_article t1,t_comment t2
+			where t1.id=t2.article_id  and (t2.parent_id = ''  or t2.parent_id is null)
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.collect_num,
+			tt1.is_collect,tt1.is_love,tt1.key_words,tt1.order_sc,tt1.online_date
+			)
+		union(
+		select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+		t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+		t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,0 comment_num,0 collect_num,t1.is_collect,t1.is_love,
+		0 love_num,0 read_num,t1.key_words,t1.order_sc,t1.online_date
+		from t_article t1
+		)
+	)ttt1 
+	where ttt1.is_online='1'
+			
+			<if test="online_date != null and online_date != ''">  
+	           and ttt1.online_date <![CDATA[ <= ]]> #{online_date}
+	            
+	   	   </if>
+	    	<if test="author_name != null and author_name != ''">  
+	            and ttt1.author_name like '%'||#{author_name}||'%'  
+	            
+	   	   </if>
+	   	   <if test="file_type != null and file_type != ''">  
+	            and ttt1.file_type like '%'||#{file_type}||'%'  
+	   	   </if>
+	   	   <if test="key_words != null and key_words != ''">  
+	            and ttt1.key_words like '%'||#{key_words}||'%'  
+	   	   </if>
+	   	   <if test="title != null and title != ''">  
+	            and ttt1.title like '%'||#{title}||'%'  
+	   	   </if>
+	   	   <if test="create_time2 != null and create_time2 != ''">  
+	         and  to_char(ttt1.create_date,'yyyy-MM-dd') =#{create_time2} 
+	   	   </if>
+	group by 
+	ttt1.id,ttt1.author_id,ttt1.author_name,ttt1.file_type_id,ttt1.file_type,ttt1.small_pic_path,ttt1.small_pic_save_name,
+	ttt1.small_pic_prior_name,ttt1.create_user_id,ttt1.create_date,ttt1.is_online,ttt1.read_limit,ttt1.is_promotion,
+	ttt1.spare_1,ttt1.spare_2,ttt1.spare_3,ttt1.title,ttt1.summary,ttt1.is_collect,ttt1.is_love,ttt1.key_words,ttt1.order_sc,ttt1.online_date
+	order by ttt1.order_sc desc,cast(to_char(sum(ttt1.collect_num), '999') as numeric) desc
+ </select>
+ <!-- 排行榜list -->
+ <select id="queryReadList" parameterType="Map" resultType="Article">
+  		select  ttt1.id,ttt1.author_id,ttt1.author_name,ttt1.file_type_id,ttt1.file_type,ttt1.small_pic_path,ttt1.small_pic_save_name,
+	ttt1.small_pic_prior_name,ttt1.create_user_id,ttt1.create_date,ttt1.is_online,ttt1.read_limit,ttt1.is_promotion,
+	ttt1.spare_1,substr(ttt1.online_date,0,11)  spare_2,ttt1.spare_3,ttt1.title,ttt1.summary,to_char(sum(ttt1.comment_num), '999') comment_num,to_char(sum(ttt1.collect_num), '999')collect_num,
+	ttt1.is_collect,to_char(sum(ttt1.love_num), '999') love_num,to_char(sum(ttt1.read_num), '999') read_num,ttt1.key_words,ttt1.order_sc,ttt1.online_date,ttt1.order_read
+	from(
+			(select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,0 comment_num,count(1) collect_num,
+			tt1.is_collect,tt1.is_love,0 love_num,0 read_num,tt1.key_words,tt1.order_sc,tt1.online_date,tt1.order_read
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.online_date,t1.order_read
+			from t_article t1,t_article_read_collect t2,t_member t3
+			where t1.id=t2.file_id  and t2.read_user_id=t3.id and t2.type='2' and t2.state_value='1'
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.is_love,
+			tt1.is_collect,tt1.key_words,tt1.order_sc,tt1.online_date,tt1.order_read,tt1.order_read)
+		union
+			(select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,0 comment_num,0 collect_num,
+			tt1.is_collect, tt1.is_love,0 love_num,count(1)read_num,tt1.key_words,tt1.order_sc,tt1.online_date,tt1.order_read
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.online_date,t1.order_read
+			from t_article t1,t_article_read_collect t2,t_member t3
+			where t1.id=t2.file_id  and t2.read_user_id=t3.id and t2.type='0'
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.collect_num,
+			tt1.is_collect,tt1.is_love,tt1.love_num,tt1.read_num,tt1.key_words,tt1.order_sc,tt1.online_date,tt1.order_read)
+		union(
+			select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,0 comment_num,0 collect_num,
+			tt1.is_collect,tt1.is_love,count(1) love_num,0 read_num,tt1.key_words,tt1.order_sc,tt1.online_date,tt1.order_read
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.online_date,t1.order_read
+			from t_article t1,t_article_read_collect t2,t_member t3
+			where t1.id=t2.file_id  and t2.read_user_id=t3.id and t2.type='1' and t2.state_value='1'
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.collect_num,
+			tt1.is_collect,tt1.is_love,tt1.key_words,tt1.order_sc,tt1.online_date,tt1.order_read
+			)
+		union(
+			select tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,count(1) comment_num,0 collect_num,
+			tt1.is_collect,tt1.is_love,0 love_num,0 read_num,tt1.key_words,tt1.order_sc,tt1.online_date,tt1.order_read
+			 from
+			(select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+			t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+			t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,t1.comment_num,t1.collect_num,t1.is_collect,t1.is_love,
+			t1.love_num,t1.read_num,t1.key_words,t1.order_sc,t1.online_date,t1.order_read
+			from t_article t1,t_comment t2
+			where t1.id=t2.article_id  and (t2.parent_id = ''  or t2.parent_id is null)
+			)tt1 group by tt1.id,tt1.author_id,tt1.author_name,tt1.file_type_id,tt1.file_type,tt1.small_pic_path,tt1.small_pic_save_name,
+			tt1.small_pic_prior_name,tt1.create_user_id,tt1.create_date,tt1.is_online,tt1.read_limit,tt1.is_promotion,
+			tt1.spare_1,tt1.spare_2,tt1.spare_3,tt1.title,tt1.summary,tt1.comment_num,tt1.collect_num,
+			tt1.is_collect,tt1.is_love,tt1.key_words,tt1.order_sc,tt1.online_date,tt1.order_read
+			)
+		union(
+		select t1.id,t1.author_id,t1.author_name,t1.file_type_id,t1.file_type,t1.small_pic_path,t1.small_pic_save_name,
+		t1.small_pic_prior_name,t1.create_user_id,t1.create_date,t1.is_online,t1.read_limit,t1.is_promotion,
+		t1.spare_1,t1.spare_2,t1.spare_3,t1.title,t1.summary,0 comment_num,0 collect_num,t1.is_collect,t1.is_love,
+		0 love_num,0 read_num,t1.key_words,t1.order_sc,t1.online_date,t1.order_read
+		from t_article t1
+		)
+	)ttt1 
+	where ttt1.is_online='1'
+			
+			<if test="online_date != null and online_date != ''">  
+	           and ttt1.online_date <![CDATA[ <= ]]> #{online_date}
+	            
+	   	   </if>
+	    	<if test="author_name != null and author_name != ''">  
+	            and ttt1.author_name like '%'||#{author_name}||'%'  
+	            
+	   	   </if>
+	   	   <if test="file_type != null and file_type != ''">  
+	            and ttt1.file_type like '%'||#{file_type}||'%'  
+	   	   </if>
+	   	   <if test="key_words != null and key_words != ''">  
+	            and ttt1.key_words like '%'||#{key_words}||'%'  
+	   	   </if>
+	   	   <if test="title != null and title != ''">  
+	            and ttt1.title like '%'||#{title}||'%'  
+	   	   </if>
+	   	   <if test="create_time2 != null and create_time2 != ''">  
+	         and  to_char(ttt1.create_date,'yyyy-MM-dd') =#{create_time2} 
+	   	   </if>
+	group by 
+	ttt1.id,ttt1.author_id,ttt1.author_name,ttt1.file_type_id,ttt1.file_type,ttt1.small_pic_path,ttt1.small_pic_save_name,
+	ttt1.small_pic_prior_name,ttt1.create_user_id,ttt1.create_date,ttt1.is_online,ttt1.read_limit,ttt1.is_promotion,
+	ttt1.spare_1,ttt1.spare_2,ttt1.spare_3,ttt1.title,ttt1.summary,ttt1.is_collect,ttt1.is_love,ttt1.key_words,ttt1.order_sc,ttt1.online_date,ttt1.order_read
+	order by ttt1.order_read desc,cast(to_char(sum(ttt1.read_num), '999') as numeric) desc
+ </select>
+ <!-- 调整最新，热门，精选置顶功能 -->
+ <update id="updateOrderArticle" parameterType="Article">
+		update t_article
+		<if test="order_new != null and order_new != ''">  
+	         set order_new=  cast((select max(order_new)from t_article) as numeric)+1
+	   	</if> 
+	   	<if test="order_col != null and order_col != ''">  
+	         set order_col=  cast((select max(order_col)from t_article) as numeric)+1
+	   	</if> 
+	   	<if test="order_hot != null and order_hot != ''">  
+	         set order_hot=  cast((select max(order_hot)from t_article) as numeric)+1
+	   	</if> 
+		where id=#{id}
+	</update>
+	<!-- 取消 -->
+	<update id="updateOrderArticleQx" parameterType="Article">
+		update t_article
+		<if test="order_new !=0">  
+	         set order_new=  0
+	   	</if> 
+	   	<if test="order_col != 0">  
+	         set order_col=  0
+	   	</if> 
+	   	<if test="order_hot != 0">  
+	         set order_hot=  0
+	   	</if> 
+		where id=#{id}
+	</update>
+<!-- 根据文章id获取阅读数，收藏数和喜爱，评论数 -->
+	<select id="queryNumById" parameterType="string" resultType="Article">
+	select ttt1.id,to_char(sum(ttt1.love_num), '999') love_num,to_char(sum(ttt1.read_num), '999') read_num,
+	        to_char(sum(ttt1.comment_num), '999') comment_num,to_char(sum(ttt1.collect_num), '999') collect_num 
+	 from
+	((select t1.id,count(1) love_num , 0 as read_num ,0 as comment_num,0 as collect_num  from t_article t1,t_article_read_collect t2
+	 where t1.id = t2.file_id  and t1.id = #{id} 
+	  and t2.type='1' and t2.state_value='1' group by t1.id )
+	union
+	 ( select t1.id,0 as love_num , count(1) read_num ,0 as comment_num,0 as collect_num from t_article t1,t_article_read_collect t2
+	 where t1.id = t2.file_id  and t1.id = #{id}
+	  and t2.type='0' group by t1.id)
+	union
+	  (select t1.id,0 as love_num , 0 as read_num , count(1) comment_num ,0 as collect_num from t_article t1,t_comment t2
+	 where t1.id = t2.article_id  and t1.id = #{id} group by t1.id)
+	union
+	 (select t1.id,0 as love_num , 0 as read_num ,0 as comment_num,count(1) collect_num from t_article t1,t_article_read_collect t2
+	 where t1.id = t2.file_id  and t1.id = #{id} 
+	 and t2.type='2' and t2.state_value='1' group by t1.id) )ttt1 group by ttt1.id
+	</select>
+<!-- 查询文章相关题目 -->
+	<select id="querySubjectMagByArticleId" parameterType="string" resultType="SubjectMag">
+			select subject_id subjectId,article_id articleId,index_num indexNum,subject_type subjectType,subject_content subjectContent,
+			subject_items subjectItems,answer,create_user_id createUserId,create_date createDate,msg,spare_1 spare1
+			from t_subject_mag t1
+			where  
+			t1.article_id = #{article_id}
+	</select>
+<!-- 查询答题结果 -->
+	<select id="querySubjectResult" parameterType="SubjectResult" resultType="SubjectResult">
+			select id,article_id articleId,member_id memberId,subject_id subjectId,member_answer memberAnswer,
+						subject_answer subjectAnswer,result,spare_1 spare1,create_date createDate
+			from t_subject_result t1
+			<where>
+			   <if test="articleId != null and articleId != ''">  
+	            and article_id =#{articleId} 
+		   	   </if>
+		   	   <if test="memberId != null and memberId != ''">  
+		        and member_id=#{memberId} 
+		   	   </if>
+			</where>
+	</select>
+<!--保存答题结果-->
+	<insert id="saveSubjectResult" parameterType="SubjectResult">
+		INSERT  INTO t_subject_result (id,article_id,member_id,subject_id,member_answer,
+						subject_answer,result,spare_1,create_date)
+		VALUES (#{id},#{articleId},#{memberId},#{subjectId},#{memberAnswer},#{subjectAnswer},#{result},#{spare1},now())
+	</insert>
+<!--保存题目-->
+	<insert id="saveSubjectMag" parameterType="SubjectMag">
+		INSERT  INTO  t_subject_mag(subject_id,article_id,index_num,subject_type,subject_content,
+						subject_items,answer,create_user_id,create_date,msg,spare_1)
+		VALUES (#{subjectId},#{articleId},#{indexNum},#{subjectType},#{subjectContent},#{subjectItems},#{answer},#{createUserId},now(),#{msg},#{spare1})
+	</insert>
+<!--根据题目id查询题目-->
+	<select id="querySubjectById" parameterType="string" resultType="SubjectMag">
+		select subject_id subjectId,article_id articleId,index_num indexNum,subject_type subjectType,subject_content subjectContent,
+			subject_items subjectItems,answer,create_user_id createUserId,create_date createDate,msg,spare_1 spare1
+			from t_subject_mag t1
+			where  
+			t1.subject_id = #{subjectId}
+	</select>
+ <!--修改题目-->
+	<update id="updateSubjectMag" parameterType="SubjectMag">
+		update t_subject_mag
+		<set>
+			 <if test="indexNum != null and indexNum != ''">  
+		            index_num =#{indexNum}, 
+			 </if>
+			 <if test="subjectType != null and subjectType != ''">  
+		            subject_type =#{subjectType}, 
+			 </if>
+			 <if test="subjectContent != null and subjectContent != ''">  
+		            subject_content =#{subjectContent}, 
+			 </if>
+			 <if test="subjectItems != null and subjectItems != ''">  
+		            subject_items =#{subjectItems}, 
+			 </if>
+			 <if test="answer != null and answer != ''">  
+		            answer =#{answer}, 
+			 </if>
+		</set> 
+		where subject_id=#{subjectId}
+	</update>
+ <!--调整收藏榜排序  置顶-->
+	<update id="updateOrderSc" parameterType="Article">
+		update t_article 
+		set order_sc=  cast((select max(order_sc)from t_article) as numeric)+1
+		where id=#{id}
+	</update>
+ <!--调整收藏榜排序  取消置顶-->
+	<update id="updateOrderScqx" parameterType="Article">
+		update t_article 
+		set order_sc= 0
+		where id=#{id}
+	</update>
+	<!--调整排行榜排序  置顶-->
+	<update id="updateOrderRead" parameterType="Article">
+		update t_article 
+		set order_read=  cast((select max(order_read)from t_article) as numeric)+1
+		where id=#{id}
+	</update>
+ <!--调整排行榜排序  取消置顶-->
+	<update id="updateOrderReadqx" parameterType="Article">
+		update t_article 
+		set order_read= 0
+		where id=#{id}
+	</update>
+ <delete id="delArticleById" parameterType="string">
+		DELETE FROM t_article WHERE id = #{id}
+ </delete>
+ 
+ <select id="queryNotifyArticleList" parameterType="Map" resultType="Article">
+		select t1.*
+		from t_article t1
+		where  
+		 	 t1.order_hot = 2
+</select>
+
+<delete id="deleteSubjectMagById" parameterType="string">
+		DELETE FROM t_subject_mag WHERE subject_id = #{subject_id}
+</delete>
+<update id="updateArticleNotify" parameterType="Article">
+		update t_article 
+		set order_hot = 3
+		where id=#{id}
+</update>
+</mapper> 

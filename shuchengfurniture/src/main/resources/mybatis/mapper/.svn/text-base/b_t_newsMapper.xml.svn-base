@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winhands.cshj.news.repository.MBNewsDao">
+
+	<!--查询资讯列表-->
+	<select id="queryNewsList" resultType="News" parameterType="News">
+		SELECT id,title,author,type,publish_time publishTime,img_url imgUrl,news_url newsUrl,
+				is_online isOnline,create_user_name createUserName,create_date createDate,
+				order_id orderId,spare_1 spare1,spare_2 spare2
+		FROM t_news WHERE 1 = 1
+	   	<if test="isOnline != null and isOnline != ''">  
+	            and is_online=#{isOnline} 
+	    </if>
+	    <if test="type != null and type != ''">  
+	            and type=#{type} 
+	    </if>
+		ORDER BY type,orderId DESC
+	</select>
+	<!--根据id获取对象-->
+	<select id="queryCarouselById" resultType="News" parameterType="string">
+		SELECT id,title,author,type,publish_time publishTime,img_url imgUrl,news_url newsUrl,
+				is_online isOnline,create_user_name createUserName,create_date createDate,
+				order_id orderId,spare_1 spare1,spare_2 spare2
+		FROM t_news WHERE id = #{id} 
+	</select>
+	<!--查询轮播列表客户端-->
+	<select id="queryCarouselList" resultType="News" parameterType="News">
+		SELECT id,title,author,type,publish_time publishTime,img_url imgUrl,news_url newsUrl,
+				is_online isOnline,create_user_name createUserName,create_date createDate,
+				order_id orderId,spare_1 spare1,spare_2 spare2
+		FROM t_news WHERE 1 = 1
+	   	<if test="isOnline != null and isOnline != ''">  
+	            and is_online=#{isOnline} 
+	    </if>
+	     <if test="type != null and type != ''">  
+	            and type=#{type} 
+	    </if>
+		ORDER BY orderId DESC limit 4
+	</select>
+	<!--保存轮播资讯信息-->
+	<insert id="saveNews" parameterType="News">
+		INSERT  INTO t_news(id,title,author,type,publish_time,img_url,news_url,
+				is_online,create_user_name,create_date,order_id,spare_1,spare_2) 
+		VALUES (#{id},#{title},#{author},#{type},#{publishTime},#{imgUrl},#{newsUrl},
+				#{isOnline},#{createUserName},now(),#{orderId},#{spare1},#{spare2})
+	</insert>
+
+	<!--删除轮播,资讯信息-->
+	<delete id="deleteNewsById" parameterType="string">
+		DELETE FROM t_news WHERE id = #{$}
+	</delete>
+	<!-- 修改 -->
+	<update id="updateNews" parameterType="News">
+		update t_news
+	  <set> 
+		<if test="title != null and title != ''">  
+	            title =#{title}, 
+	   	</if>
+	   	<if test="author != null and author != ''">  
+	             author =#{author},
+	   	</if>
+	   	<if test="imgUrl != null and imgUrl != ''">  
+	             img_url =#{imgUrl}, 
+	   	</if>
+	   	<if test="newsUrl != null and newsUrl != ''">  
+	             news_url =#{newsUrl}, 
+	   	</if> 
+	   	<if test="isOnline != null and isOnline != ''">  
+	             is_online =#{isOnline}, 
+	   	</if> 
+	   	<if test="orderId != null and orderId != ''">  
+	             order_id =#{orderId}, 
+	   	</if>
+	  </set> 	  
+		where id=#{id}
+	</update>
+</mapper> 

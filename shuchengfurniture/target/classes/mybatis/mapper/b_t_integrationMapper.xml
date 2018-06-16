@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winhands.cshj.integration.repository.MBIntegrationDao">
+
+	<!--查询积分规则列表-->
+	<select id="queryIntegrationList" resultType="Integration" parameterType="Integration">
+		SELECT t1.id,rule_name ruleName,score,t2.user_name_cn createUserId,t1.create_date createDate
+		FROM t_integration t1,t_users t2
+		WHERE 1 = 1 and t1.create_user_id = t2.user_id
+		ORDER BY create_date DESC
+	</select>
+	<!--查询积分日志列表-->
+	<select id="queryIntegrationMemberList" resultType="IntegrationMember" parameterType="IntegrationMember">
+	SELECT t1.id,t2.user_name memberId,t4.title articleId,t3.rule_name integrationId,t1.score,
+		t1.create_date createDate,t1.spare_1 spare1,t1.spare_2 spare2
+		FROM t_member_integration t1,t_member t2,t_integration t3,t_article t4
+		where t1.member_id=t2.id and t1.integration_id =t3.id
+		and t1.article_id = t4.id
+		   <if test="memberId != null and memberId != ''">
+	            and t2.user_name like '%'||#{memberId}||'%'  
+	   	   </if>
+	   	   <if test="articleId != null and articleId != ''">  
+	            and t4.title like '%'||#{articleId}||'%'  
+	   	   </if>
+	   	   <if test="integrationId != null and integrationId != ''">  
+	            and t1.integration_id =#{integrationId} 
+	   	   </if>
+		ORDER BY t1.create_date DESC
+	</select>
+	<!--查询积分规则-->
+	<select id="queryIntegrationById" resultType="Integration" parameterType="string">
+		SELECT id,rule_name ruleName,score,create_user_id createUserId,create_date createDate
+		FROM t_integration WHERE id = #{$}
+	</select>
+	<!--保存积分规则-->
+	<insert id="saveIntegration" parameterType="Integration">
+		INSERT  INTO t_integration (id,rule_name,score,create_user_id,create_date)
+		VALUES (#{id},#{ruleName},#{score},#{createUserId},now())
+	</insert>
+
+	<!--删除积分规则-->
+	<delete id="deleteIntegrationById" parameterType="string">
+		DELETE FROM t_integration WHERE id = #{$}
+	</delete>
+	<!--根据会员删除积分日志-->
+	<delete id="deleteIntegrationMember" parameterType="string">
+		DELETE FROM t_member_integration WHERE member_id = #{memberId}
+	</delete>
+	<!--保存积分日志-->
+	<insert id="saveIntegrationMember" parameterType="IntegrationMember">
+		INSERT  INTO t_member_integration (id,member_id,article_id,integration_id,score,
+		create_date,spare_1,spare_2)
+		VALUES (#{id},#{memberId},#{articleId},#{integrationId},#{score},
+		now(),#{spare1},#{spare2})
+	</insert>
+</mapper> 

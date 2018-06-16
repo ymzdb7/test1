@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winhands.ncjc.push.repository.MBPushDao">
+	<select id="findByPushUserDevice" parameterType="Map" resultType="PushUserDevice">
+       SELECT t1.appid,t1.user_id,t1.channel_id,t1.create_time,
+       			t1.update_time,t1.bd_user_id,t1.device_type
+       FROM t_push_user_device t1 
+       where 1=1 
+       <if test="channel_id != null and channel_id != ''">  
+	            and t1.channel_id = #{channel_id}
+	   </if> 
+	   <if test="user_id != null and user_id != ''">  
+	            and t1.user_id = #{user_id}
+	   </if>
+	   <if test="appid != null and appid != ''">  
+	            and t1.appid = #{appid}
+	   </if>  
+    </select>
+    <select id="queryUserMsg" parameterType="Map" resultType="PushMsg">
+       select t1.sn,t1.app_id,t1.cmd,t1.time_stamp,t1.from_id,
+       		  t1.from_name,t1.push_type,t1.device_type,t1.group_ids,
+       		  t1.group_names,t1.msg_type,t1.msg_text,t1.msg_title,
+       		  t1.att_url,t1.att_name,t1.att_length,t1.msg_id,t1.msg_status,
+       		  t1.is_read,t1.create_time,t1.spare_1,t1.spare_2,t1.spare_3,
+       		  t1.spare_4,t1.spare_5
+       from t_push_msg t1 
+       where t1.group_ids  = #{group_ids}
+       <if test="from_id != null and from_id != ''">  
+	            and t1.from_id = #{from_id}
+	   </if>    
+       <if test="msg_type != null and msg_type != ''">  
+	            and t1.msg_type = #{msg_type}
+	   </if>    
+	   <if test="msg_type != null">  
+	            and msg_type = #{msg_type}  
+	   </if>
+	   <if test="msg_title != null">  
+	            and msg_title like '%'||#{msg_title}||'%'  
+	   </if>
+	   <if test="msg_text != null">  
+	            and msg_text like '%'||#{msg_text}||'%'  
+	   </if>  
+	   <if test="create_time != null">  
+	            and create_time <![CDATA[ >= ]]> #{create_time}
+	   </if>
+	   order by create_time desc 
+    </select>
+</mapper> 

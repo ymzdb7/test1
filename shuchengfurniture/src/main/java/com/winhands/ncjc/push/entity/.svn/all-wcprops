@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/ncjc/push/entity
+END
+PushUserDeviceBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/ncjc/push/entity/PushUserDeviceBean.java
+END
+PushUserDevice.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/ncjc/push/entity/PushUserDevice.java
+END
+PushMsg.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/ncjc/push/entity/PushMsg.java
+END
+PushUserInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/java/com/winhands/ncjc/push/entity/PushUserInfo.java
+END

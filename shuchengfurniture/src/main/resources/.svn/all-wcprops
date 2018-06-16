@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/resources
+END
+spring-mvc.xml
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/resources/spring-mvc.xml
+END
+logback.xml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/resources/logback.xml
+END
+quartz.xml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/shucheng/!svn/ver/213/branches/shuchenggy/src/main/resources/quartz.xml
+END
+spring-shiro.xml
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/resources/spring-shiro.xml
+END
+spring-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/resources/spring-config.xml
+END
+ehcache-shiro.xml
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/resources/ehcache-shiro.xml
+END
+spring-mybatis.xml
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/resources/spring-mybatis.xml
+END
+config.properties
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/shucheng/!svn/ver/213/branches/shuchenggy/src/main/resources/config.properties
+END

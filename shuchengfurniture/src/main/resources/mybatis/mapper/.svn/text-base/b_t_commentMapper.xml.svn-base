@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winhands.cshj.comment.repository.CommentDao">
+	<!--查询一级评论-->
+	<select id="queryFirstLevelCommentList" resultType="comment" parameterType="map">
+		SELECT t1.id,content,create_user_id createUserId,t1.create_time createTime,parent_id parentId,article_id articleId,
+		t2.user_name createUserName,replied_user_name repliedUserName,replied_user_id repliedUserId,t2.avatar_path createUserAvatar,t3.c likeSum,
+		t4.id hasLiked
+		 FROM t_comment t1
+		LEFT JOIN t_member t2 ON t1.create_user_id = t2.id
+		LEFT JOIN (select "count"(1) c,comment_id from t_comment_like GROUP BY comment_id) t3 ON t1.id =  t3.comment_id
+		LEFT JOIN (SELECT id,comment_id FROM t_comment_like WHERE create_user_id = #{memberId}) t4 ON t1.id = t4.comment_id
+		WHERE article_id = #{articleId} AND (parent_id is NULL OR parent_id = '') ORDER BY t1.create_time DESC
+	</select>
+
+	<!--查询二级评论和回复-->
+	<select id="querySecondLevelCommentList" resultType="comment" parameterType="map">
+		with RECURSIVE a as(
+			select * from t_comment where parent_id = #{parentId}
+		UNION ALL
+			SELECT t1.* FROM t_comment t1,a WHERE t1.parent_id = a.id
+		)
+		SELECT a.id,content,a.create_user_id createUserId,a.create_time createTime,parent_id parentId,article_id articleId,
+		t2.user_name createUserName,replied_user_name repliedUserName,replied_user_id repliedUserId,t2.avatar_path createUserAvatar,
+		t3.c likeSum,t4.id hasLiked FROM a
+		LEFT JOIN t_member t2 ON a.create_user_id = t2.id
+		LEFT JOIN (select "count"(1) c,comment_id from t_comment_like GROUP BY comment_id) t3 ON a.id =  t3.comment_id
+		LEFT JOIN (SELECT id,comment_id FROM t_comment_like WHERE create_user_id = #{memberId}) t4 ON a.id = t4.comment_id
+		ORDER BY createTime
+	</select>
+
+    <!--根据评论id查询评论-->
+    <select id="queryCommentById" parameterType="map" resultType="comment">
+        SELECT t1.id,content,create_user_id createUserId,t1.create_time createTime,parent_id parentId,article_id articleId,
+		create_user_name createUserName,replied_user_name repliedUserName,replied_user_id repliedUserId,t2.avatar_path createUserAvatar,t3.c likeSum,
+		t4.id hasLiked
+		 FROM t_comment t1
+		 LEFT JOIN t_member t2 ON t1.create_user_id = t2.id
+		LEFT JOIN (select "count"(1) c,comment_id from t_comment_like GROUP BY comment_id) t3 ON t1.id =  t3.comment_id
+		LEFT JOIN (SELECT id,comment_id FROM t_comment_like WHERE create_user_id = #{memberId}) t4 ON t1.id = t4.comment_id
+		WHERE t1.id = #{parentId}
+
+    </select>
+     <!--根据查询条件查询评论-->
+    <select id="queryCommentList" parameterType="map" resultType="comment">
+        SELECT t1.id,content,create_user_id createUserId,t1.create_time createTime,parent_id parentId,article_id articleId,
+		create_user_name createUserName,replied_user_name repliedUserName,replied_user_id repliedUserId
+		 FROM t_comment t1
+		<where>
+		   <if test="articleId != null and articleId != ''">  
+	            and article_id =#{articleId} 
+	   	   </if>
+	   	   <if test="createUserId != null and createUserId != ''">  
+	            and create_user_id=#{createUserId} 
+	   	   </if>
+		</where> 
+    </select>
+    
+    
+    <select  id="queryCommentMagList" parameterType="commentMag" resultType="commentMag">
+        SELECT
+			t2.phone_num phoneNum,
+			t2.user_name userName,
+			t3.title,
+			t1.id,content,t1.create_user_id createUserId,t1.create_time createTime,t1.parent_id parentId,
+			t1.article_id articleId,t1.create_user_name createUserName,t1.replied_user_name repliedUserName,
+			t1.replied_user_id repliedUserId
+		FROM
+			t_comment t1
+		LEFT JOIN t_member t2 ON t1.create_user_id = t2."id",
+		 t_article t3
+		WHERE
+			t1.article_id = t3."id"
+            <if test="title != null and title != ''">   
+	            and t3.title  like  '%'||#{title}||'%' 
+	   	    </if>
+	   	    <if test="phoneNum != null and phoneNum != ''">  
+	            and ( t2.phone_num like '%'||#{phoneNum}||'%'  or t2.user_name like '%'||#{userName}||'%' )
+	   	    </if>
+	   	    <if test="content != null and content != ''">   
+	            and t1.content  like  '%'||#{content}||'%' 
+	   	    </if>
+         order  by t1.create_time desc
+    </select>
+
+	<!--新增评论-->
+	<insert id="saveComment" parameterType="comment">
+		INSERT INTO t_comment (id,content,create_user_id,create_time,parent_id,article_id,
+		create_user_name,replied_user_name,replied_user_id) VALUES (#{id},#{content},#{createUserId},now(),#{parentId},#{articleId},
+		#{createUserName},#{repliedUserName},#{repliedUserId})
+	</insert>
+
+    <!--删除评论或回复-->
+    <delete id="deleteCommentById">
+        delete from t_comment where id =#{$}
+    </delete>
+ 	<!--根据评论人删除评论或回复-->
+    <delete id="deleteCommentByCreateUserId">
+        delete from t_comment where create_user_id =#{createUserId}
+    </delete>
+    <insert id="saveLike">
+        INSERT  INTO t_comment_like (id,create_user_id,comment_id,create_time) VALUES (#{id},#{createUserId},#{commentId},now())
+    </insert>
+</mapper> 

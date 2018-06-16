@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<type-mapping>
+		<sql-type jdbc-type="VARCHAR" hibernate-type="string"></sql-type>
+	</type-mapping>
+	<table name="t_func_log" schema="public" class="Log"></table>
+	<table name="t_users" schema="public"
+		class="com.winhands.base.user.entity.User">
+	</table>
+	<table name="t_organization_conf" schema="public"
+		class="OrganizationConf">
+	</table>
+	<table name="t_dict" schema="public" class="com.winhands.base.dict.entity.Dict"></table>
+</hibernate-reverse-engineering>

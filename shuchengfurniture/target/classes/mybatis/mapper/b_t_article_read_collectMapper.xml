@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winhands.cshj.article.repository.MBArticleReadCollectDao">
+	<select id="queryStatueByType" parameterType="Map" resultType="ArticleReadCollect">
+		select t1.id,t1.file_id,t1.read_user_id,t1.type,t1.state_value,t1.spare_1,
+		t1.spare_2,t1.spare_3,t1.create_date
+		from t_article_read_collect t1
+		 <where> 
+	    	<if test="article_id != null and article_id != ''">  
+	            and t1.file_id=#{article_id}
+	   	   </if>
+	   	   <if test="read_user_id != null and read_user_id != ''">  
+	             and t1.read_user_id=#{read_user_id}
+	   	   </if>
+	   	   <if test="type != null and type != ''">  
+	            and t1.type=#{type} 
+	   	   </if>
+	   	    <if test="state_value != null and state_value != ''">  
+	            and t1.state_value=#{state_value} 
+	   	   </if>
+	 </where>
+	</select>
+	 <delete id="delReadByArticleId" parameterType="string">
+		DELETE FROM t_article_read_collect WHERE file_id = #{file_id}
+  	 </delete>
+</mapper> 

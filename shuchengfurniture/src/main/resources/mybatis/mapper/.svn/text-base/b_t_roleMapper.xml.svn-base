@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winhands.base.auth.repository.RoleDao">
+
+	<!-- 查询角色列表 -->
+	<select id="queryRoleList" parameterType="Role" resultType="Role">
+		select role_id as id,role_name as name,create_time createTime, create_user_id createUserId from t_role 
+		where 1=1 
+		<if test="name != '' and name != null">
+			and role_name like '%'||#{name}||'%'
+		</if>
+		order by create_time
+	</select>
+	
+	<!-- 查询菜单列表并标识是否是角色所拥有 -->
+	<select id="queryMenuByRoleId" parameterType="string" resultType="Menu">
+		select t1.menu_id id,menu_name as name,menu_url url,menu_type
+		as type,is_parent isParent,
+		parent_menu_id parentId,order_id orderId,is_vaild isVaild,js_text jsText,createuser
+		createUser,createdate createDate,t2.role_id as spare1 from t_menu_conf t1 LEFT JOIN (select * from t_role_menu where role_id = #{id}) t2 
+		on t1.menu_id = t2.menu_id order by t1.order_id
+	</select>
+	
+	<!-- 查询角色列表并标识用户是否已授权 -->
+	<select id="queryRoleByUserId" parameterType="string" resultType="Role">
+		select t1.role_id as id,role_name as name,t1.create_time createTime, t1.create_user_id createUserId,t2.user_id spare1 
+		from t_role t1 LEFT JOIN (select * from t_user_role where user_id = #{userId}) t2 on t1.role_id = t2.role_id
+	</select>
+	
+	<!-- 保存角色 -->
+	<insert id="saveRole" parameterType="Role">
+		insert into t_role(role_id,role_name,create_time,create_user_id) values (#{id},#{name},now(),#{createUserId})
+	</insert>
+	
+	<!-- 保存角色和菜单对应关系 -->
+	<insert id="saveRoleMenu" parameterType="roleMenu">
+		insert into t_role_menu (role_id,menu_id) values 
+		 <foreach collection="list" index="index" item="item" open="" separator="," close="">
+		(#{item.roleId},#{item.menuId})
+		</foreach>
+	</insert>
+	
+	<!-- 保存用户和角色关系 -->
+	<insert id="saveUserRole" parameterType="userRole">
+		insert into t_user_role(id,user_id,role_id) values
+		<foreach collection="list" index="index" item="item" open="" separator="," close="">
+		(#{item.id},#{item.userId},#{item.roleId})
+		</foreach>
+	</insert>
+	
+	<!-- 修改角色 -->
+	<update id="updateRole" parameterType="Role">
+		update t_role set role_name = #{name} where role_id = #{id}
+	</update>
+	
+	<!-- 根据id删除角色 -->
+	<delete id="deleteRoleById" parameterType="String">
+		delete from t_role where role_id = #{$}
+	</delete>
+	
+	<!-- 根据角色id删除用户授权 -->
+	<delete id="deleteUserRoleByRoleId" parameterType="String">
+		delete from t_user_role where role_id = #{$}
+	</delete>
+	
+	<!-- 根据角色id删除角色菜单对应关系 -->
+	<delete id="deleteRoleMenuByRoleId" parameterType="String">
+		delete from t_role_menu where role_id = #{$}
+	</delete>
+	
+	<!-- 根据用户id删除对应角色关系 -->
+	<delete id="deleteUserRoleByUserId" parameterType="String">
+		delete from t_user_role where user_id = #{$}
+	</delete>
+	
+	
+
+	
+</mapper> 

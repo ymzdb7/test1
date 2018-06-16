@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/dict
+END
+addDict.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/dict/addDict.jsp
+END
+dictIndex.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/dict/dictIndex.jsp
+END
+editDict.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/view/dict/editDict.jsp
+END

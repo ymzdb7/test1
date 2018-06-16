@@ -1,0 +1,27 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ include file="common.jsp"%>
+<!--toggle button start-->
+<a class="toggle-btn"><i class="fa fa-bars"></i></a>
+<!--toggle button end-->
+
+<!--search start
+				<form class="searchform" action="index.html" method="post">
+					<input type="text" class="form-control" name="keyword"
+						placeholder="Search here..." />
+				</form>-->
+<!--search end-->
+
+<!--notification menu start -->
+
+<div class="menu-right">
+	<ul class="notification-menu">
+		<li><a href="#" class="btn btn-default dropdown-toggle"
+			data-toggle="dropdown"> <img src="<%=imgPath%>/photos/user_admin.jpg"
+				alt="" /><%=user.userNameCn%><span class="caret"></span></a>
+			<ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+				<li><a href="<%=basePath%>user/toChangePassword"><i class="fa fa-cog"></i>修改密码</a></li>
+				<li><a href="<%=basePath%>logout"><i class="fa fa-sign-out"></i>退出</a></li>
+			</ul></li>
+	</ul>
+</div>
+<!--notification menu end 通知模块，精简掉不需要的模块 -->

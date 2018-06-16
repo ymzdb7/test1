@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winhands.base.org.repository.MBOrgDao">
+	<!--
+		获取用户: 输出直接映射到对象, login_name列要"as loginName"以方便映射 ,team_id as "team.id"创建team对象并赋值
+	-->
+	<sql id="org_all" >
+      WITH RECURSIVE org_all AS ( 
+        SELECT * FROM t_org WHERE org_id = #{org_id}
+      union   ALL 
+        SELECT t_org.* FROM t_org, org_all WHERE t_org.parent_org_id = org_all.org_id
+      ) 
+      SELECT org_id orgId,org_code orgCode,org_name orgName,parent_org_id parentOrgId,org_level orgLevel,org_remarks orgRemarks,
+	      		 org_type orgType,org_class orgClass,create_user createUser,create_date createDate,effect_date effectDate,is_vaild isVaild,
+	      		 org_spare1 orgSpare1,invalid_date invalidDate,org_spare2 orgSpare2,org_spare3 orgSpare3,org_spare4 orgSpare4,order_id orderId
+	   FROM org_all
+  	</sql>
+  
+	<select id="queryOrgListByType" parameterType="Map"  resultType="Org">
+	      SELECT org_id,org_code,org_name,parent_org_id,org_level,org_remarks,
+	      		 org_type,org_class,create_user,create_date,effect_date,is_vaild,
+	      		 org_spare1,invalid_date,org_spare2,org_spare3,org_spare4,order_id
+		  FROM t_org
+		  <where> 
+	    	<if test="org_type != null and org_type != ''">  
+	            and org_type = #{org_type}
+	   	   </if>
+	      </where>
+		   order by order_id asc
+	</select>
+	<select id="queryOrgListType2" parameterType="Map"  resultType="Org">
+	      SELECT org_id orgId,org_code orgCode,org_name orgName,parent_org_id parentOrgId,org_level orgLevel,org_remarks orgRemarks,
+	      		 org_type orgType,org_class orgClass,create_user createUser,create_date createDate,effect_date effectDate,is_vaild isVaild,
+	      		 org_spare1 orgSpare1,invalid_date invalidDate,org_spare2 orgSpare2,org_spare3 orgSpare3,org_spare4 orgSpare4,order_id orderId
+		  FROM t_org
+		 order by order_id asc
+	</select>
+	<select id="findPidByOrgId" parameterType="Map"  resultType="Org">
+	      SELECT org_id orgId,org_code orgCode,org_name orgName,parent_org_id parentOrgId,org_level orgLevel,org_remarks orgRemarks,
+	      		 org_type orgType,org_class orgClass,create_user createUser,create_date createDate,effect_date effectDate,is_vaild isVaild,
+	      		 org_spare1 orgSpare1,invalid_date invalidDate,org_spare2 orgSpare2,org_spare3 orgSpare3,org_spare4 orgSpare4,order_id orderId
+		  FROM t_org
+		  <where> 
+	    	<if test="org_id != null and org_id != ''">  
+	            and org_id = #{org_id}
+	   	   </if>
+	      </where>
+	</select>
+	<select id="queryOrgListByPid" parameterType="Map"  resultType="Org">
+	      <include refid="org_all" />
+	</select>
+</mapper> 

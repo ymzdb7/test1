@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/WEB-INF/lib
+END
+httpcore-4.4.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/WEB-INF/lib/httpcore-4.4.1.jar
+END
+ant.jar
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/WEB-INF/lib/ant.jar
+END
+quartz-2.2.2.jar
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/WEB-INF/lib/quartz-2.2.2.jar
+END
+json.jar
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/WEB-INF/lib/json.jar
+END
+spring-context-support-4.2.5.RELEASE.jar
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/WEB-INF/lib/spring-context-support-4.2.5.RELEASE.jar
+END
+pinyin4j-2.5.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/WEB-INF/lib/pinyin4j-2.5.0.jar
+END
+ueditor-1.1.2.jar
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/WEB-INF/lib/ueditor-1.1.2.jar
+END
+activation-1.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/shucheng/!svn/ver/214/branches/shuchenggy/src/main/webapp/WEB-INF/lib/activation-1.1.jar
+END
+javax.mail-1.6.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/shucheng/!svn/ver/214/branches/shuchenggy/src/main/webapp/WEB-INF/lib/javax.mail-1.6.0.jar
+END
+postgresql-9.1-903.jdbc4.jar
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/shucheng/!svn/ver/214/branches/shuchenggy/src/main/webapp/WEB-INF/lib/postgresql-9.1-903.jdbc4.jar
+END

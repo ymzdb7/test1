@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winhands.cshj.member.repository.MemberDao">
+	<sql id="org_all" >
+      WITH RECURSIVE org_all AS ( 
+        SELECT * FROM t_org WHERE org_id = #{spare1}
+      union   ALL 
+        SELECT t_org.* FROM t_org, org_all WHERE t_org.parent_org_id = org_all.org_id
+      ) 
+      SELECT org_id orgId,org_code orgCode,org_name orgName,parent_org_id parentOrgId,org_level orgLevel,org_remarks orgRemarks,
+	      		 org_type orgType,org_class orgClass,create_user createUser,create_date createDate,effect_date effectDate,is_vaild isVaild,
+	      		 org_spare1 orgSpare1,invalid_date invalidDate,org_spare2 orgSpare2,org_spare3 orgSpare3,org_spare4 orgSpare4,order_id orderId
+	   FROM org_all
+  	</sql>
+	<!--根据会员名查询用户-->
+	<select id="queryMemberByName" parameterType="string" resultType="member">
+		SELECT id,user_name userName,phone_num phoneNum,password,salt,create_time createTime,avatar_path avatarPath,email,
+		last_login_time lastLoginTime,type,expire_time expireTime,last_recharge_time lastRechargeTime,is_vaild isVaild,
+		has_completed hasCompleted,org_id1 orgId1,org_id2 orgId2,org_id3 orgId3,school_id schoolId,
+		class_id classId,integration,spare_1 spare1,spare_2 spare2,spare_3 spare3,is_student isStudent,
+		is_complete_student isCompleteStudent,user_name_cn userNameCn
+		FROM t_member WHERE phone_num = #{$}
+	</select>
+	<select id="queryMemberById" parameterType="string" resultType="member">
+		SELECT id,user_name userName,phone_num phoneNum,password,salt,create_time createTime,avatar_path avatarPath,email,
+		last_login_time lastLoginTime,type,expire_time expireTime,last_recharge_time lastRechargeTime,is_vaild isVaild,has_completed hasCompleted,
+		org_id1 orgId1,org_id2 orgId2,org_id3 orgId3,school_id schoolId,
+		class_id classId,integration,spare_1 spare1,spare_2 spare2,spare_3 spare3,is_student isStudent,
+		is_complete_student isCompleteStudent,user_name_cn userNameCn
+		FROM t_member WHERE id = #{id}
+	</select>
+	<select id="queryMemberByEmail" parameterType="string" resultType="member">
+		SELECT id,user_name userName,phone_num phoneNum,password,salt,create_time createTime,avatar_path avatarPath,email,
+		last_login_time lastLoginTime,type,expire_time expireTime,last_recharge_time lastRechargeTime,is_vaild isVaild,has_completed hasCompleted,
+		org_id1 orgId1,org_id2 orgId2,org_id3 orgId3,school_id schoolId,
+		class_id classId,integration,spare_1 spare1,spare_2 spare2,spare_3 spare3,is_student isStudent,
+		is_complete_student isCompleteStudent,user_name_cn userNameCn
+		FROM t_member WHERE email = #{email}
+	</select>
+	<!--查询会员信息列表-->
+	<select id="queryMemberList" parameterType="member" resultType="member">
+	SELECT id,user_name userName,phone_num phoneNum,password,salt,create_time createTime,avatar_path avatarPath,email,
+		last_login_time lastLoginTime,type,expire_time expireTime,last_recharge_time lastRechargeTime,t1.is_vaild isVaild,has_completed hasCompleted,
+		org_id1 orgId1,org_id2 orgId2,org_id3 orgId3,t2.org_name schoolId,
+		t3.org_name classId,integration,spare_1 spare1,spare_2 spare2,spare_3 spare3,is_student isStudent,
+		is_complete_student isCompleteStudent,user_name_cn userNameCn
+		FROM t_member t1 
+		left join t_org t2 on t1.school_id = t2.org_id 
+		left join t_org t3 on t1.class_id = t3.org_id
+		WHERE 1=1 AND user_name != '999'
+		<if test="isVaild != null and isVaild != ''">
+			AND t1.is_vaild = #{isVaild}
+		</if>
+		<if test="userName != null and userName != ''">
+			AND user_name LIKE '%'||#{userName}||'%'
+		</if>
+		<if test="phoneNum != null and phoneNum != ''">
+			AND phone_num LIKE '%'||#{phoneNum}||'%'
+		</if>
+		<if test="spare1 != null and spare1 != ''">
+			AND t1.class_id in (select tt1.orgId from (<include refid="org_all" />)tt1)
+		</if>
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="type != null and type != ''">
+			AND type = #{type}
+		</if>
+		ORDER BY  createTime DESC
+	</select>
+
+	<!--新增会员-->
+	<insert id="saveMember" parameterType="member">
+		INSERT INTO t_member(id,user_name,phone_num,password,salt,create_time,type,is_vaild,has_completed,email,
+		org_id1,org_id2,org_id3,school_id,class_id,integration,spare_1,spare_2,spare_3,is_student,is_complete_student,user_name_cn)
+	    VALUES
+		(#{id},#{userName},#{phoneNum},#{password},#{salt},now(),#{type},#{isVaild},'1',#{email},
+		#{orgId1},#{orgId2},#{orgId3},#{schoolId},#{classId},#{integration},#{spare1},#{spare2},#{spare3},#{isStudent},#{isCompleteStudent},#{userNameCn})
+	</insert>
+
+	<!--修改会员信息-->
+	<update id="updateMember" parameterType="member">
+		UPDATE t_member SET user_name = #{userName},password =#{password},salt=#{salt},type=#{type},last_login_time = #{lastLoginTime},
+			expire_time =#{expireTime},last_recharge_time = #{lastRechargeTime},is_vaild = #{isVaild},
+			has_completed = #{hasCompleted},avatar_path = #{avatarPath},phone_num= #{phoneNum},email=#{email},
+			org_id1=#{orgId1},org_id2=#{orgId2},org_id3=#{orgId3},school_id=#{schoolId},
+			class_id=#{classId},integration=#{integration},spare_1=#{spare1},spare_2=#{spare2},spare_3=#{spare3},
+			is_student=#{isStudent},is_complete_student=#{isCompleteStudent},user_name_cn=#{userNameCn}
+			WHERE id = #{id}
+	</update>
+	<!-- 会员付费列表 -->
+	<select id="queryMemberFeeList" parameterType="member" resultType="member">
+		SELECT t1.id,t1.user_name userName,t1.phone_num phoneNum,t2.expire_time expireTime,t2.uptime lastRechargeTime,
+				to_char(round(cast(t2.receipt_amount as numeric) /100,2) ,'90.99') avatarPath
+				from t_member t1,t_pay_his t2
+				where t1.id=t2.member_id
+				and t1.is_vaild='1'
+		<if test="userName != null and userName != ''">
+			AND t1.user_name = #{userName}
+		</if>
+		<if test="phoneNum != null and phoneNum != ''">
+			AND t1.phone_num ='#{phoneNum}
+		</if>
+		<if test="avatarPath != null and avatarPath != ''">
+			AND to_char(t1.last_recharge_time,'yyyyMM') = #{avatarPath}
+		</if>
+		ORDER BY  t2.uptime DESC   
+	</select>
+	<!-- 会员付费统计 -->
+	<select id="queryFeeCountList" parameterType="member" resultType="member">
+		select to_char(uptime,'yyyyMM') userName, to_char(round(SUM(cast(receipt_amount as numeric) )/100,2) ,'90.99') phoneNum from t_pay_his 
+		<where>
+		<if test="avatarPath != null and avatarPath != ''">
+			AND to_char(uptime,'yyyyMM') = #{avatarPath}
+		</if>
+		</where>
+		group by to_char(uptime,'yyyyMM')   
+		order by to_char(uptime,'yyyyMM') desc  
+	</select>
+	<!-- 按班级统计积分 -->
+	<select id="queryIntegrationCountListByClass" parameterType="member" resultType="member">
+		select tt1.org_id spare1,tt2.org_name schoolId,tt1.class_id classId,tt1.integration
+	    from
+		(select t2.org_id,t1.school_id,t2.org_name class_id,to_char(sum(cast(t1.integration as numeric)),'9999') integration  from t_member t1,t_org t2
+		where t1.class_id=t2.org_id  group by t2.org_id,t1.school_id,t2.org_name )tt1,t_org tt2
+		where tt1.school_id=tt2.org_id
+		<if test="spare1 != null and spare1 != ''">
+			AND tt2.org_name LIKE '%'||#{spare1}||'%'
+		</if>
+		<if test="spare2 != null and spare2 != ''">
+			AND tt1.class_id LIKE '%'||#{spare2}||'%'
+		</if>
+		order by integration desc
+	</select>
+	<!-- 按学校统计积分 -->
+	<select id="queryIntegrationCountListBySchool" parameterType="member" resultType="member">
+		select t2.org_id spare1,t2.org_name schoolId,to_char(sum(cast(t1.integration as numeric)),'9999') integration  from t_member t1,t_org t2
+		where t1.school_id=t2.org_id  
+		<if test="spare1 != null and spare1 != ''">
+			AND t2.org_name LIKE '%'||#{spare1}||'%'
+		</if>
+		group by t2.org_id,t2.org_name 
+		order by integration desc 
+	</select>
+    <!-- 查询验证码 -->
+    <select id="queryCaptcha" parameterType="string" resultType="captcha">
+        SELECT phone_num phoneNum,captcha,update_time updateTime,today_count todayCount from t_captcha WHERE phone_num = #{phoneNum}
+    </select>
+
+    <!-- 保存验证码 -->
+    <insert id="saveCaptcha" parameterType="captcha">
+        INSERT INTO t_captcha (phone_num,captcha,update_time,today_count)
+        VALUES (#{phoneNum},#{captcha},now(),#{todayCount})
+    </insert>
+
+    <!-- 修改验证码 -->
+    <update id="updateCaptcha" parameterType="captcha">
+        UPDATE t_captcha SET captcha = #{captcha},today_count = #{todayCount},update_time = now() WHERE phone_num = #{phoneNum}
+    </update>
+	<delete id="delteteMember" parameterType="string">
+		DELETE FROM t_member WHERE id = #{id}
+ 	</delete>
+
+</mapper> 

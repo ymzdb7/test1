@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/js/ckeditor
+END
+ckeditor.js
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/js/ckeditor/ckeditor.js
+END
+CHANGES.md
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/js/ckeditor/CHANGES.md
+END
+LICENSE.md
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/js/ckeditor/LICENSE.md
+END
+config.js
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/js/ckeditor/config.js
+END
+styles.js
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/js/ckeditor/styles.js
+END
+build-config.js
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/js/ckeditor/build-config.js
+END
+README.md
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/js/ckeditor/README.md
+END
+contents.css
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/shucheng/!svn/ver/200/branches/shuchenggy/src/main/webapp/js/ckeditor/contents.css
+END
