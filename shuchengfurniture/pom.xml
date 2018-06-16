@@ -22,8 +22,6 @@
 		<hibernate.version>4.3.11.Final</hibernate.version>
 	</properties>
 
-	ss
-	
 	<dependencies>
 
 		<dependency>
