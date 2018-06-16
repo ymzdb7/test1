@@ -22,6 +22,14 @@
 		<hibernate.version>4.3.11.Final</hibernate.version>
 	</properties>
 
+	
+	
+	
+	
+	
+	
+	
+	
 	<dependencies>
 
 		<dependency>
